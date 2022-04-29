@@ -1,0 +1,16 @@
+***************************************
+- Crear el archvo .editorconfig:
+Instalamos la extension EditorConfig for VS Code, copiamos el archivo .editorconfig de otro proyecto que lo tenga.
+Este formatea el editor para trabajar con cierta configuracion
+**************************************
+
+**************************************
+-Crear el archvo .eslintrc.json
+Trabajamos con el estandar de ECMAS6 y con Prettier
+**************************************
+
+**************************************
+-Crear el archvo .gitignore:
+Vamos a gitignore.io elegimos el ambiente en el que vamos a trabajar en este caso Node.js y elegimos los sistemas operativos para que nos ignore en todos los S.O
+**************************************
+
