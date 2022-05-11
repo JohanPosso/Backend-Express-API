@@ -7,7 +7,8 @@ const usuarioRouter = require('./usuario.router');
 function routerApi(app) {
   const router = express.Router();
   app.use('/api/v2',router);//Para manejar distintas versiones en las API
-  app.use('/productos',productosRouter);
+  app.use('/productos',productosRouter); //Este endpoint es opcional sin versionamiento
+  router.use('/productos',productosRouter);
   router.use('/usuario',usuarioRouter);
 }
 

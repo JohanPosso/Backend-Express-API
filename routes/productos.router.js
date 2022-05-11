@@ -1,59 +1,44 @@
 const express = require('express');
-const { status } = require('express/lib/response');
-const faker = require('faker');
 const router = express.Router();
+const ProductoServices = require('../services/productos.services')
+const services = new ProductoServices();//Se crea una instancia del servicio
 
+router.get('/', async (req, res) => {
+  const productos = await services.buscar();
+  res.json(productos);
 
-router.get('/', (req, res) => {
-  const productos = [];
-  const { size } = req.query;
-  const limit = size || 10;
+});
 
-  for (let index = 0; index < limit; index++) {
-    productos.push({
-      Nombre: faker.commerce.productName(),
-      Precio: parseInt(faker.commerce.price(), 10),
-      Descripcion: faker.commerce.productDescription()
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  const producto = await services.BuscarUno(id);//Le pasamos el id que le envia el usuario
+  res.json(producto);
+});
+
+router.post('/', async (req, res) => {
+  const body = req.body
+  const newProducto = await services.crear(body); //Crear el producto desde el backend
+  res.status(201).json(newProducto);
+});
+
+router.patch('/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    const body = req.body
+    const updateProducto = await services.Actualizar(id, body);
+    res.json(updateProducto);
+  } catch (error) { //Capturamos el error
+    res.status(404).json({ //Devolvemos el error en formato JSON
+      message: error.message
     });
   }
-  res.json(productos);
+
 });
 
-router.get('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   const { id } = req.params;
-  res.json([{
-    id,
-    Nombre: "Johan",
-    Apellido: "Posso"
-  }, {
-    Peso: 80,
-    altura: "1,86m"
-  }]);
-});
+  const EliminarProducto = await services.Eliminar(id);
 
-router.post('/', (req, res) => {
-  const body = req.body
-  res.status(201).json({ //Se utiliza para enviar el estado
-    message: 'Creado Exitosamente',
-    data: body
-  });
+  res.json(EliminarProducto);
 });
-
-router.patch('/:id', (req, res) => {
-  const {id}  = req.params
-  const body = req.body
-  res.json({
-    id,
-    message: 'Modificado Exitosamente'
-    ,data:body
-  });
-});
-
-router.delete('/:id', (req, res) => {
-  const {id} = req.params;
-  res.json({
-    id,
-    message: 'Eliminado Exitosamente'
-  });
-});
-module.exports = router;
+module.exports = router; 
